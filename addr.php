@@ -5,16 +5,23 @@
     $db = new DB();
     $db->connect_db($_DB['host'], $_DB['username'], $_DB['password'], $_DB['dbname']);
     $db->query("SELECT * from tbl_name");
-	$first = 1;
+	
+	$str = "";
+	if($db->get_num_rows() > 0){
+		$str = "[";
+	}
     while($result = $db->fetch_array())
-    {
-		if($first){
-			$first = 0;
-			continue;
-		}
-		echo json_encode($result);
-		echo "<br />";
+    {		
+		$str = $str.json_encode($result).",";
     }
+	$str = trim($str, ",");
+	if($db->get_num_rows() > 0){
+		$str = $str."]";
+	}
+	echo $str;
+	
+	
+	
     
 
 ?>
